@@ -1,96 +1,78 @@
 #!/usr/bin/env bash
-# 07-download-backup.sh — Baixa imagem + MD5 do Google Drive e valida
+# 07-download-backup.sh — baixa imagem de backup do Google Drive
 # Uso: ./07-download-backup.sh <YYYY-MM-DD> [destino]
 
 set -euo pipefail
-source "$(dirname "$0")/00-common.sh"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=00-common.sh
+source "${SCRIPT_DIR}/00-common.sh"
 
-DATA="${1:?Uso: $0 <YYYY-MM-DD> [destino]}"
-DEST_DIR="${2:-./images}"
-MANIFEST="$(dirname "$0")/../images/backups.json"
+MANIFEST="${SCRIPT_DIR}/../images/backups.json"
+DATE="${1:-}"
+DEST="${2:-$(pwd)}"
 
-# ─── Verifica dependências ────────────────────────────────────────
-for cmd in jq gdown md5sum; do
-    if ! command -v "$cmd" >/dev/null 2>&1; then
-        log_err "$cmd não instalado."
-        case $cmd in
-            jq)     log_info "Instale: sudo apt install jq" ;;
-            gdown)  log_info "Instale: sudo apt install pipx && pipx install gdown" ;;
-            md5sum) log_info "Instale: sudo apt install coreutils" ;;
-        esac
-        exit 1
-    fi
-done
-
-# ─── Extrai dados do manifest ─────────────────────────────────────
-read_field() {
-    jq -r --arg d "$DATA" ".backups[] | select(.date==\$d) | .$1 // empty" "$MANIFEST"
-}
-
-FILE=$(read_field file)
-GDRIVE_ID=$(read_field gdrive_id)
-GDRIVE_MD5_ID=$(read_field gdrive_md5_id)
-MD5=$(read_field md5)
-
-if [[ -z $FILE ]]; then
-    log_err "Backup com data $DATA não encontrado no manifest."
-    log_info "Use ./06-list-backups.sh para listar disponíveis."
-    exit 1
+if [[ -z "$DATE" ]]; then
+  log_err "Uso: $0 <YYYY-MM-DD> [destino]"
+  log_info "Backups disponíveis:"
+  "${SCRIPT_DIR}/06-list-backups.sh"
+  exit 1
 fi
 
-if [[ -z $GDRIVE_ID ]]; then
-    log_err "gdrive_id não configurado para $DATA."
-    exit 1
+# Dependências
+command -v jq    >/dev/null || { log_err "jq não encontrado. Instale: sudo apt install jq"; exit 1; }
+command -v gdown >/dev/null || { log_err "gdown não encontrado. Instale: pipx install gdown"; exit 1; }
+command -v md5sum >/dev/null || { log_err "md5sum não encontrado."; exit 1; }
+
+[[ -f "$MANIFEST" ]] || { log_err "Manifest não encontrado: $MANIFEST"; exit 1; }
+
+# Lê metadados do manifest
+ENTRY=$(jq -r --arg d "$DATE" '.backups[] | select(.date==$d)' "$MANIFEST")
+if [[ -z "$ENTRY" ]]; then
+  log_err "Backup com data '$DATE' não encontrado no manifest."
+  "${SCRIPT_DIR}/06-list-backups.sh"
+  exit 1
 fi
 
-mkdir -p "$DEST_DIR"
-OUTPUT="$DEST_DIR/$FILE"
-MD5_OUTPUT="$DEST_DIR/$FILE.md5"
+FILE=$(echo "$ENTRY"      | jq -r '.file')
+MD5_FILE=$(echo "$ENTRY"  | jq -r '.md5_file')
+MD5_EXPECT=$(echo "$ENTRY"| jq -r '.md5')
+GID=$(echo "$ENTRY"       | jq -r '.gdrive_id')
+GID_MD5=$(echo "$ENTRY"   | jq -r '.gdrive_md5_id')
 
-# ─── Download da imagem ───────────────────────────────────────────
+mkdir -p "$DEST"
+cd "$DEST"
+
 log_info "📥 Baixando imagem do Google Drive..."
 log_info "    Arquivo: $FILE"
-log_info "    Destino: $OUTPUT"
-echo
+log_info "    Destino: $DEST/$FILE"
 
-if [[ -f $OUTPUT ]]; then
-    log_warn "Arquivo já existe: $OUTPUT"
-    read -rp "Sobrescrever? [s/N]: " resp
-    [[ ${resp,,} == "s" ]] || { log_info "Abortado."; exit 0; }
-    rm -f "$OUTPUT"
+# gdown >= 5.x: passa o ID direto OU usa --fuzzy com URL
+gdown --fuzzy "https://drive.google.com/uc?id=${GID}" -O "$FILE"
+
+log_info "📥 Baixando arquivo .md5..."
+gdown --fuzzy "https://drive.google.com/uc?id=${GID_MD5}" -O "$MD5_FILE"
+
+# Validação 1: MD5 do manifest vs arquivo baixado
+log_info "🔍 Validando MD5 (manifest)..."
+MD5_REAL=$(md5sum "$FILE" | awk '{print $1}')
+if [[ "$MD5_REAL" != "$MD5_EXPECT" ]]; then
+  log_err "❌ MD5 não confere com manifest!"
+  log_err "    Esperado: $MD5_EXPECT"
+  log_err "    Obtido:   $MD5_REAL"
+  exit 2
 fi
+log_info "✅ MD5 manifest OK: $MD5_REAL"
 
-gdown --id "$GDRIVE_ID" -O "$OUTPUT"
-
-# ─── Download do MD5 (se disponível) ──────────────────────────────
-if [[ -n $GDRIVE_MD5_ID ]]; then
-    log_info "📥 Baixando arquivo MD5 de referência..."
-    gdown --id "$GDRIVE_MD5_ID" -O "$MD5_OUTPUT" --quiet
-    REMOTE_MD5=$(awk '{print $1}' "$MD5_OUTPUT" | tr -d '[:space:]' | tr 'A-Z' 'a-z')
-    log_info "    MD5 remoto: $REMOTE_MD5"
-fi
-
-# ─── Validação ────────────────────────────────────────────────────
-log_info "🔐 Calculando MD5 local..."
-ACTUAL=$(md5sum "$OUTPUT" | awk '{print $1}')
-log_info "    MD5 local:  $ACTUAL"
-
-# Compara: prioriza MD5 baixado; cai pro manifest se não tiver
-EXPECTED="${REMOTE_MD5:-$MD5}"
-
-if [[ -z $EXPECTED ]]; then
-    log_warn "Nenhum MD5 de referência disponível. Pulando validação."
-elif [[ "$ACTUAL" == "$EXPECTED" ]]; then
-    log_ok "✅ Integridade verificada! MD5: $ACTUAL"
+# Validação 2: arquivo .md5 baixado vs arquivo real
+log_info "🔍 Validando MD5 (arquivo .md5)..."
+if md5sum -c "$MD5_FILE" >/dev/null 2>&1; then
+  log_info "✅ MD5 file OK"
 else
-    log_err "❌ MD5 NÃO confere!"
-    log_err "   Esperado: $EXPECTED"
-    log_err "   Obtido:   $ACTUAL"
-    log_err "   Arquivo possivelmente corrompido — refaça o download."
-    exit 2
+  log_warn "⚠️  Arquivo .md5 não bateu (pode ter formato diferente). MD5 do manifest já validou."
 fi
 
-echo
-log_ok "🎉 Download concluído!"
+log_info "🎉 Download concluído com sucesso!"
+log_info "    $DEST/$FILE"
+log_info ""
 log_info "Para restaurar:"
-echo "    sudo ./scripts/99-restore-image.sh \"$OUTPUT\" /dev/mmcblkX"
+log_info "    sudo ./scripts/99-restore-image.sh $DEST/$FILE /dev/mmcblkX"
