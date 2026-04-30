@@ -1,0 +1,4 @@
+# Diretório para armazenar imagens .img.gz geradas pelo script 05-backup-emmc.sh
+# Use Git LFS para versionar arquivos grandes:
+#   git lfs install
+#   git lfs track "*.img.gz"

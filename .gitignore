@@ -1,0 +1,21 @@
+# Imagens de backup (use Git LFS se quiser versionar)
+*.img
+*.img.gz
+*.img.xz
+*.img.zst
+
+# Logs
+*.log
+logs/
+
+# Temporários
+*.tmp
+*.bak
+*~
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
