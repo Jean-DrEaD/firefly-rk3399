@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # 07-download-backup.sh — baixa imagem de backup do Google Drive
 # Uso: ./07-download-backup.sh <YYYY-MM-DD> [destino]
+# Compatível com gdown >= 6.0.0 (extração de ID é automática, sem --fuzzy)
 
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -19,8 +20,8 @@ if [[ -z "$DATE" ]]; then
 fi
 
 # Dependências
-command -v jq    >/dev/null || { log_err "jq não encontrado. Instale: sudo apt install jq"; exit 1; }
-command -v gdown >/dev/null || { log_err "gdown não encontrado. Instale: pipx install gdown"; exit 1; }
+command -v jq     >/dev/null || { log_err "jq não encontrado. Instale: sudo apt install jq"; exit 1; }
+command -v gdown  >/dev/null || { log_err "gdown não encontrado. Instale: pipx install gdown"; exit 1; }
 command -v md5sum >/dev/null || { log_err "md5sum não encontrado."; exit 1; }
 
 [[ -f "$MANIFEST" ]] || { log_err "Manifest não encontrado: $MANIFEST"; exit 1; }
@@ -33,11 +34,11 @@ if [[ -z "$ENTRY" ]]; then
   exit 1
 fi
 
-FILE=$(echo "$ENTRY"      | jq -r '.file')
-MD5_FILE=$(echo "$ENTRY"  | jq -r '.md5_file')
-MD5_EXPECT=$(echo "$ENTRY"| jq -r '.md5')
-GID=$(echo "$ENTRY"       | jq -r '.gdrive_id')
-GID_MD5=$(echo "$ENTRY"   | jq -r '.gdrive_md5_id')
+FILE=$(echo "$ENTRY"       | jq -r '.file')
+MD5_FILE=$(echo "$ENTRY"   | jq -r '.md5_file')
+MD5_EXPECT=$(echo "$ENTRY" | jq -r '.md5')
+GID=$(echo "$ENTRY"        | jq -r '.gdrive_id')
+GID_MD5=$(echo "$ENTRY"    | jq -r '.gdrive_md5_id')
 
 mkdir -p "$DEST"
 cd "$DEST"
@@ -46,11 +47,11 @@ log_info "📥 Baixando imagem do Google Drive..."
 log_info "    Arquivo: $FILE"
 log_info "    Destino: $DEST/$FILE"
 
-# gdown >= 5.x: passa o ID direto OU usa --fuzzy com URL
-gdown --fuzzy "https://drive.google.com/uc?id=${GID}" -O "$FILE"
+# gdown >= 6.0: passa só o ID (extração automática, sem --fuzzy)
+gdown "$GID" -O "$FILE" --continue
 
 log_info "📥 Baixando arquivo .md5..."
-gdown --fuzzy "https://drive.google.com/uc?id=${GID_MD5}" -O "$MD5_FILE"
+gdown "$GID_MD5" -O "$MD5_FILE" --continue
 
 # Validação 1: MD5 do manifest vs arquivo baixado
 log_info "🔍 Validando MD5 (manifest)..."
