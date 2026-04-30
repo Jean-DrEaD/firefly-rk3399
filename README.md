@@ -14,7 +14,7 @@ proprietário (GPT com `loader1`, `loader2`, `trust`, `misc`, etc.).
 
 ## 🎯 Objetivo
 
-Instalação completa do **Klipper / Mainsail / Moonraker / KlipperScreen**
+Instalação completa do **Klipper / Mainsail / Moonraker / KlipperScreen / Shake & Tune**
 no **eMMC interno de 16 GB**, garantindo:
 
 - ✅ Maior performance de I/O (eMMC > SD)

@@ -1,0 +1,23 @@
+{
+  "storage": {
+    "provider": "google-drive",
+    "folder_url": "https://drive.google.com/drive/folders/1nZTJ9DwPD0GCtvU8gBvAaP9ipu3JOxSj?usp=drive_link"
+  },
+  "backups": [
+    {
+      "date": "2026-04-30",
+      "file": "firefly-backup-20260430.img.gz",
+      "size_bytes": 3435973836,
+      "size_human": "3.2G",
+      "md5": "1ab974d2268be859fdcacaadca9b65cf",
+      "md5_file": "firefly-backup-20260430.img.gz.md5",
+      "source_device": "/dev/mmcblk0",
+      "source_size": "16G",
+      "host": "firefly",
+      "os": "Ubuntu BSP 20.04",
+      "notes": "Sistema Klipper/Mainsail 100% funcional pós-clone SD→eMMC",
+      "gdrive_id": "1TogEzG0hUVV140bq-y_jvWY609Mq1QKI",
+      "gdrive_md5_id": "1fleKrSL3qXfew5ikITMpwf67imvBOZqE"
+    }
+  ]
+}

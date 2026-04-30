@@ -19,3 +19,11 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Imagens de backup (hospedadas no Google Drive, NUNCA commitar)
+images/*.img
+images/*.img.gz
+images/*.img.xz
+images/*.img.zst
+images/*.md5
+images/*.sha256
