@@ -4,6 +4,7 @@
 source "$(dirname "$0")/00-common.sh"
 
 require_root
+identify_storage
 require_device "${SD_DEVICE}p4"
 require_device "${EMMC_DEVICE}p4"
 

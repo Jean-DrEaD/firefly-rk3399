@@ -78,9 +78,8 @@ sudo ./scripts/02-clone-boot.sh
 ```
 
 **O que faz:**
-- Cria/formata a partição de boot na eMMC
-- Copia kernel, dtb, extlinux.conf, uboot script
-- Preserva flags de boot e tipo de filesystem
+- Clona a partição `/boot` (p4) inteira do SD para a eMMC com `dd`
+- Preserva exatamente o conteúdo: kernel, dtb, extlinux.conf, u-boot script
 
 ---
 
@@ -91,10 +90,8 @@ sudo ./scripts/03-clone-rootfs.sh
 ```
 
 **O que faz:**
-- Formata a partição rootfs na eMMC (ext4)
-- Usa `rsync -aHAX` (preserva permissões, hardlinks, ACLs, xattrs)
-- Atualiza `/etc/fstab` com os novos UUIDs
-- Reescreve `extlinux.conf` apontando para o rootfs da eMMC
+- Clona a partição rootfs (p7) inteira do SD para a eMMC com `dd`
+- Preserva layout exato de blocos (sem necessidade de reformatar)
 
 **Tempo estimado:** 10-25 min (dependendo do tamanho do sistema).
 
@@ -107,8 +104,8 @@ sudo ./scripts/04-clone-userdata.sh
 ```
 
 **O que faz:**
-- Replica a partição `/userdata` (configs Klipper, perfis, prints)
-- Usa `rsync` preservando timestamps e ownership
+- Clona a partição `/userdata` (p8) inteira do SD para a eMMC com `dd`
+- Replica configs Klipper, perfis e prints preservando a estrutura de blocos
 
 > 💡 Se você não usa `/userdata`, esse script é opcional.
 
@@ -149,7 +146,7 @@ df -h /
    ```
 3. Confirme que `root=UUID=...` aponta pra partição correta
 
-### Erro "no space left on device" durante rsync
+### Erro "No space left on device" durante clone
 
 A eMMC pode ser **menor** que o SD. Estratégias:
 - Limpe `/var/cache/apt`, `/tmp`, logs antigos antes de clonar
@@ -158,11 +155,12 @@ A eMMC pode ser **menor** que o SD. Estratégias:
 
 ### UUIDs duplicados
 
-Se ambos (SD e eMMC) ficarem com mesmo UUID após clone, o boot fica imprevisível. Os scripts já regeneram UUID na eMMC, mas confirme:
+Como os scripts usam `dd` (clone bit-a-bit), o eMMC ficará com os **mesmos UUIDs** do SD. Isso pode causar comportamento imprevisível no boot se ambos estiverem conectados ao mesmo tempo. Após clonar e reiniciar pela eMMC sem o SD, não há problema. Se precisar usar ambos simultaneamente, regenere UUIDs na eMMC:
 
 ```bash
-sudo blkid /dev/mmcblk0p? /dev/mmcblk1p?
-# UUIDs devem ser diferentes
+sudo tune2fs -U random /dev/mmcblk0p7   # rootfs
+sudo tune2fs -U random /dev/mmcblk0p8   # userdata
+# Depois atualize /etc/fstab na eMMC
 ```
 
 Mais soluções em [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md).

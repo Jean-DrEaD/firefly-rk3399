@@ -37,37 +37,40 @@ sudo ./scripts/05-backup-emmc.sh
 1. Detecta o dispositivo eMMC
 2. Gera nome com data: `firefly-backup-YYYYMMDD.img.gz`
 3. Lê dispositivo bloco-a-bloco com `dd`
-4. Pipa para `gzip -9` (compressão máxima)
-5. Mostra progresso com `pv`
-6. Calcula MD5 ao final
-7. Salva `.md5` companheiro
+4. Pipa para `gzip -1` (otimizado para velocidade)
+5. Calcula MD5 ao final
+6. Salva `.md5` companheiro e `.meta` com metadados
 
 **Saída esperada:**
 
 ```
-[INFO] 🔍 Detectando dispositivo eMMC...
-[INFO]    Origem: /dev/mmcblk0 (15.6 GB)
-[INFO] 📦 Gerando imagem comprimida...
-[INFO]    Destino: images/firefly-backup-20260430.img.gz
-15.6GiB 0:42:18 [6.30MiB/s] [====================>] 100%
-[INFO] 🔐 Calculando MD5...
-[INFO] ✅ MD5: 1ab974d2268be859fdcacaadca9b65cf
-[INFO] 💾 Tamanho final: 3.2 GB (taxa de compressao: 4.9x)
-[INFO] 🎉 Backup concluido!
+[INFO] eMMC detectado: /dev/mmcblk0
+[INFO] Origem:  /dev/mmcblk0
+[INFO] Destino: /userdata/firefly-backup-20260618-1603.img.gz
+[WARN] Garanta espaço livre suficiente em /userdata
+[INFO] Gerando imagem comprimida (gzip -1, otimizado para velocidade)...
+16384+0 records in/out ... (dd progress)
+[ OK ] Backup concluído!
+─────────────────────────────────────────
+file:       firefly-backup-20260618-1603.img.gz
+size:       4.0G
+md5:        65a3e884a7f43fc78a258964997a1436
+elapsed:    2400s
+─────────────────────────────────────────
 ```
 
 ---
 
 ## 📂 Arquivos gerados
 
-Em `images/`:
+Em `/userdata/` (padrão) ou no diretório passado como argumento:
 
 | Arquivo | Tamanho típico | Descrição |
 |---------|---------------|-----------|
 | `firefly-backup-YYYYMMDD.img.gz` | 2-4 GB | Imagem comprimida da eMMC |
 | `firefly-backup-YYYYMMDD.img.gz.md5` | < 1 KB | Hash MD5 companheiro |
 
-> 📝 Ambos são **ignorados pelo Git** (`.gitignore`). A distribuição é via Google Drive — veja [`DISTRIBUTION.md`](DISTRIBUTION.md).
+> 📝 As imagens `.img.gz` são **ignoradas pelo Git** (`.gitignore`). A distribuição é via Google Drive — veja [`DISTRIBUTION.md`](DISTRIBUTION.md).
 
 ---
 
@@ -75,33 +78,28 @@ Em `images/`:
 
 ### Alterar destino
 
-Edite as variáveis no início do `05-backup-emmc.sh`:
+Passe o caminho completo como primeiro argumento:
 
 ```bash
-OUT_DIR="${OUT_DIR:-./images}"
-PREFIX="${PREFIX:-firefly-backup}"
+sudo ./scripts/05-backup-emmc.sh /mnt/usb-externo/meu-firefly.img.gz
 ```
 
-Ou exporte antes de rodar:
+Se omitido, o padrão é `/userdata/firefly-backup-YYYYMMDD-HHMM.img.gz`.
+
+### Compressão máxima (arquivo menor)
+
+O padrão é `gzip -1` (velocidade). Para priorizar tamanho menor, edite o script:
 
 ```bash
-sudo OUT_DIR=/mnt/usb-externo PREFIX=meu-firefly ./scripts/05-backup-emmc.sh
-```
-
-### Compressão mais rápida (menor compressão)
-
-Se você prioriza velocidade sobre tamanho, troque no script:
-
-```bash
-# Antes:  gzip -9
-# Depois: gzip -1   (10x mais rápido, ~20% maior)
+# Antes:  gzip -1
+# Depois: gzip -9   (arquivo menor, mas ~10x mais lento)
 ```
 
 ---
 
 ## ⏱️ Tempo e tamanho típicos
 
-| eMMC | Tempo backup (gzip -9) | Tamanho final |
+| eMMC | Tempo backup (gzip -1) | Tamanho final |
 |------|------------------------|---------------|
 | 8 GB | ~25 min | 1.5-2.5 GB |
 | 16 GB | ~45 min | 2.5-4 GB |
@@ -117,8 +115,8 @@ Após gerar, valide o MD5:
 
 ```bash
 cd images/
-md5sum -c firefly-backup-20260430.img.gz.md5
-# Esperado: firefly-backup-20260430.img.gz: OK
+md5sum -c firefly-backup-20260618-1603.img.gz.md5
+# Esperado: firefly-backup-20260618-1603.img.gz: OK
 ```
 
 ---

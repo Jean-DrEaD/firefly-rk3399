@@ -80,19 +80,21 @@ Adicione uma nova entrada no array `backups`:
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "backups": [
     {
-      "date": "2026-04-30",
-      "filename": "firefly-backup-20260430.img.gz",
-      "size": "3.2G",
-      "size_bytes": 3435973837,
-      "md5": "1ab974d2268be859fdcacaadca9b65cf",
-      "gdrive_id": "1TogEzG0hUVV140bq-y_jvWY609Mq1QKI",
-      "gdrive_md5_id": "1AbCdEfGhIjKlMnOpQrStUvWxYz123456",
-      "host": "firefly (Ubuntu BSP 20.04)",
+      "date": "2026-06-18",
+      "file": "firefly-backup-20260618-1603.img.gz",
+      "md5_file": "firefly-backup-20260618-1603.img.gz.md5",
+      "size_human": "4.0G",
+      "size_bytes": 4199633243,
+      "md5": "65a3e884a7f43fc78a258964997a1436",
+      "gdrive_id": "16XIMkurfAEdXORyj1lDujwtGrSEW1dVc",
+      "gdrive_md5_id": "1GEXBWVRh5eMP_SCReh4WYU14zdZXGF8p",
+      "host": "firefly (AIO-3399C-AI Board)",
+      "os": "Ubuntu 20.04.6 LTS aarch64",
       "kernel": "4.4.194",
-      "notes": "Klipper/Mainsail pos-clone SD->eMMC"
+      "notes": "can0 limpo via udev, Kalico estavel"
     }
   ]
 }
@@ -102,14 +104,16 @@ Adicione uma nova entrada no array `backups`:
 
 | Campo | Como obter |
 |-------|------------|
-| `date` | Data do backup (formato `YYYY-MM-DD`) |
-| `filename` | Nome do arquivo `.img.gz` |
-| `size` | `du -h images/firefly-backup-*.img.gz` |
+| `date` | Data do backup (`YYYY-MM-DD`) |
+| `file` | Nome do arquivo `.img.gz` |
+| `md5_file` | Nome do arquivo `.md5` |
+| `size_human` | `du -h images/firefly-backup-*.img.gz` |
 | `size_bytes` | `stat -c%s images/firefly-backup-*.img.gz` |
 | `md5` | Conteúdo do arquivo `.md5` (primeiro campo) |
-| `gdrive_id` | ID extraído do link compartilhado do `.img.gz` |
-| `gdrive_md5_id` | ID extraído do link compartilhado do `.md5` |
-| `host` | Nome amigável da placa/distro |
+| `gdrive_id` | ID do link compartilhado do `.img.gz` |
+| `gdrive_md5_id` | ID do link compartilhado do `.md5` |
+| `host` | Nome amigável da placa |
+| `os` | `lsb_release -d` na placa de origem |
 | `kernel` | `uname -r` na placa de origem |
 | `notes` | Descrição livre (1 linha) |
 

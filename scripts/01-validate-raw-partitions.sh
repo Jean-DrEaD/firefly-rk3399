@@ -6,10 +6,9 @@
 source "$(dirname "$0")/00-common.sh"
 
 require_root
+identify_storage
 require_device "$SD_DEVICE"
 require_device "$EMMC_DEVICE"
-
-identify_storage
 echo
 
 log_info "Validando partições raw (p1, p2, p3, p5, p6) via MD5..."

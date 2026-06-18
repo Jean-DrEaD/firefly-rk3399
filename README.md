@@ -96,6 +96,8 @@ firefly-rk3399/
 | Download em Raspberry Pi 3B (Bookworm) | ✅ |
 | Validação MD5 dupla pós-download | ✅ |
 | `gdown 6.0.0` (sem `--fuzzy`) | ✅ |
+| Firefly AIO-3399C-AI + Ubuntu 20.04.6 + Kalico (can0/udev) | ✅ |
+| Backup completo schema manifest v1.1 | ✅ |
 
 ---
 

@@ -23,7 +23,7 @@ Como **gravar uma imagem `.img.gz`** em um SD card ou eMMC, recriando o sistema 
 - Imagem `.img.gz` em mãos (gerada localmente ou baixada — veja [`DOWNLOAD.md`](DOWNLOAD.md))
 - Dispositivo destino conectado (SD via leitor USB, ou eMMC via boot pelo SD)
 - Acesso root
-- Pacotes: `gzip`, `dd`, `pv`, `coreutils`
+- Pacotes: `gzip`, `dd`, `coreutils`
 
 ---
 
@@ -85,9 +85,9 @@ sudo ./scripts/99-restore-image.sh /tmp/firefly-backup-20260430.img.gz /dev/mmcb
 1. ✅ Valida que a imagem existe e é leg vel
 2. ✅ Valida que o destino é dispositivo de bloco (não arquivo, não partição)
 3. ⚠️ Mostra resumo (origem, destino, tamanho do destino)
-4. ⚠️ **Pede confirmação digitando `SIM`** (texto exato, em maiúsculas)
+4. ⚠️ **Pede confirmação duas vezes** (responda `s` ou `sim` em minúsculas)
 5. 🔓 Desmonta partições do destino se montadas
-6. 📥 Descomprime + grava com `dd` (via `gunzip -c | dd | pv`)
+6. 📥 Descomprime + grava com `gunzip -c | dd`
 7. 🔄 Sincroniza buffers (`sync`)
 8. 🔍 Recarrega tabela de partições (`partprobe`)
 
@@ -98,7 +98,8 @@ sudo ./scripts/99-restore-image.sh /tmp/firefly-backup-20260430.img.gz /dev/mmcb
 [INFO] 🎯 Destino: /dev/mmcblk1 (15.6G, MMC)
 [WARN] ⚠️  ATENCAO: TODOS os dados em /dev/mmcblk1 serao APAGADOS!
 
-Digite SIM para confirmar: SIM
+Tem CERTEZA que deseja restaurar? [s/N]: s
+Última chance — confirmar novamente? [s/N]: s
 
 [INFO] 🔓 Desmontando particoes do destino...
 [INFO] 📥 Gravando imagem (descompactando)...

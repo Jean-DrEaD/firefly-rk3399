@@ -25,5 +25,6 @@ images/*.img
 images/*.img.gz
 images/*.img.xz
 images/*.img.zst
-images/*.md5
 images/*.sha256
+images/*.meta
+images/* - Copy.*
