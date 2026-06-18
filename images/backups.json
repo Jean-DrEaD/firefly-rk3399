@@ -5,6 +5,19 @@
   },
   "backups": [
     {
+      "date": "2026-06-18",
+      "file": "firefly-backup-20260618-1603.img.gz",
+      "md5_file": "firefly-backup-20260618-1603.img.gz.md5",
+      "md5": "65a3e884a7f43fc78a258964997a1436",
+      "size_human": "4.0G",
+      "size_bytes": 4199633243,
+      "gdrive_id": "16XIMkurfAEdXORyj1lDujwtGrSEW1dVc",
+      "gdrive_md5_id": "1GEXBWVRh5eMP_SCReh4WYU14zdZXGF8p",
+      "host": "firefly",
+      "os": "Armbian/Firefly RK3399",
+      "notes": "can0 limpo via udev (txqueuelen 128), Kalico estavel"
+    },
+    {
       "date": "2026-04-30",
       "file": "firefly-backup-20260430.img.gz",
       "size_bytes": 3435973836,
