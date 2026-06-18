@@ -6,6 +6,20 @@
 [![Platform](https://img.shields.io/badge/Platform-RK3399-red)](https://www.rock-chips.com/a/en/products/RK33_Series/2016/0419/758.html)
 [![gdown](https://img.shields.io/badge/gdown-6.x-blue)](https://github.com/wkentaro/gdown)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Latest Release](https://img.shields.io/github/v/release/Jean-DrEaD/firefly-rk3399?label=latest%20image)](https://github.com/Jean-DrEaD/firefly-rk3399/releases/latest)
+
+---
+
+## 📦 Download direto da imagem mais recente
+
+> **Última imagem:** `firefly-backup-20260618-1603.img.gz` — 4.0 GB — Ubuntu 20.04.6 LTS aarch64 + Kalico (can0/udev)
+
+| Arquivo | Link | MD5 |
+|---------|------|-----|
+| `firefly-backup-20260618-1603.img.gz` | [⬇️ Google Drive](https://drive.google.com/uc?export=download&id=16XIMkurfAEdXORyj1lDujwtGrSEW1dVc) | `65a3e884a7f43fc78a258964997a1436` |
+| `firefly-backup-20260618-1603.img.gz.md5` | [⬇️ Google Drive](https://drive.google.com/uc?export=download&id=1GEXBWVRh5eMP_SCReh4WYU14zdZXGF8p) | — |
+
+> Todas as imagens disponíveis e o histórico completo estão na página de [Releases](https://github.com/Jean-DrEaD/firefly-rk3399/releases).
 
 ---
 
@@ -21,11 +35,11 @@ chmod +x scripts/*.sh
 # Lista backups disponíveis no Google Drive
 ./scripts/06-list-backups.sh
 
-# Baixa um backup especifico (com validacao MD5 dupla)
-./scripts/07-download-backup.sh 2026-04-30 /tmp
+# Baixa a imagem mais recente (com validacao MD5 dupla)
+./scripts/07-download-backup.sh 2026-06-18 /tmp
 
 # Restaura em um SD/eMMC (CUIDADO com o destino!)
-sudo ./scripts/99-restore-image.sh /tmp/firefly-backup-20260430.img.gz /dev/mmcblk1
+sudo ./scripts/99-restore-image.sh /tmp/firefly-backup-20260618-1603.img.gz /dev/mmcblk1
 ```
 
 > 📋 **Pré-requisitos**: `jq`, `gdown` (>= 6.0), `md5sum`. Veja [`docs/INSTALL.md`](docs/INSTALL.md).
@@ -96,8 +110,8 @@ firefly-rk3399/
 | Download em Raspberry Pi 3B (Bookworm) | ✅ |
 | Validação MD5 dupla pós-download | ✅ |
 | `gdown 6.0.0` (sem `--fuzzy`) | ✅ |
-| Firefly AIO-3399C-AI + Ubuntu 20.04.6 + Kalico (can0/udev) | ✅ |
-| Backup completo schema manifest v1.1 | ✅ |
+| Firefly AIO-3399C-AI + Ubuntu 20.04.6 + Kalico (can0/udev, txqueuelen 128) | ✅ |
+| Backup completo 4.0 GB — schema manifest v1.1 (2026-06-18) | ✅ |
 
 ---
 

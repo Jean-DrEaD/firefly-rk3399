@@ -10,7 +10,37 @@ Você tem uma placa nova/zerada e quer aplicar um backup já publicado por você
 
 ---
 
-## 📋 Pré-requisitos
+## ⚡ Download direto (sem git clone)
+
+A imagem mais recente pode ser baixada diretamente, sem precisar clonar o repositório:
+
+| Arquivo | Download | MD5 |
+|---------|----------|-----|
+| `firefly-backup-20260618-1603.img.gz` (4.0 GB) | [⬇️ Google Drive](https://drive.google.com/uc?export=download&id=16XIMkurfAEdXORyj1lDujwtGrSEW1dVc) | `65a3e884a7f43fc78a258964997a1436` |
+| `firefly-backup-20260618-1603.img.gz.md5` | [⬇️ Google Drive](https://drive.google.com/uc?export=download&id=1GEXBWVRh5eMP_SCReh4WYU14zdZXGF8p) | — |
+
+> 📦 Todas as versões disponíveis: [GitHub Releases](https://github.com/Jean-DrEaD/firefly-rk3399/releases)
+
+Ou via `wget`/`curl` na linha de comando:
+
+```bash
+# Imagem
+wget -O firefly-backup-20260618-1603.img.gz \
+  "https://drive.google.com/uc?export=download&id=16XIMkurfAEdXORyj1lDujwtGrSEW1dVc"
+
+# MD5 companheiro
+wget -O firefly-backup-20260618-1603.img.gz.md5 \
+  "https://drive.google.com/uc?export=download&id=1GEXBWVRh5eMP_SCReh4WYU14zdZXGF8p"
+
+# Validar
+md5sum -c firefly-backup-20260618-1603.img.gz.md5
+```
+
+> ⚠️ Para arquivos > 100 MB o Google Drive pode exibir aviso de antivírus. Se o `wget` baixar uma página HTML em vez da imagem, use `gdown` (veja seção abaixo) ou o script `07-download-backup.sh`.
+
+---
+
+## 📋 Pré-requisitos (download via script)
 
 Veja [`INSTALL.md`](INSTALL.md) — Cenário 1.
 
@@ -40,15 +70,23 @@ cd firefly-rk3399
 **Saída esperada:**
 
 ```
-📦 Backups disponíveis:
+[INFO] 📦 Backups disponíveis:
 
-┌────────────┬──────────┬──────────────────────────────┬──────────────────────────────────────┐
-│ Data       │ Tamanho  │ Host                         │ Notas                                │
-├────────────┼──────────┼──────────────────────────────┼──────────────────────────────────────┤
-│ 2026-04-30 │ 3.2G     │ firefly (Ubuntu BSP 20.04)   │ Klipper/Mainsail pos-clone SD->eMMC  │
-└────────────┴──────────┴──────────────────────────────┴──────────────────────────────────────┘
+  📅 2026-06-18
+     Arquivo:  firefly-backup-20260618-1603.img.gz
+     Tamanho:  4.0G
+     MD5:      65a3e884a7f43fc78a258964997a1436
+     Host:     firefly (AIO-3399C-AI Board) (Ubuntu 20.04.6 LTS aarch64)
+     Notas:    can0 limpo via udev (txqueuelen 128), Kalico estavel
 
-💡 Para baixar: ./scripts/07-download-backup.sh <data> [destino]
+  📅 2026-04-30
+     Arquivo:  firefly-backup-20260430.img.gz
+     Tamanho:  3.2G
+     MD5:      1ab974d2268be859fdcacaadca9b65cf
+     Host:     firefly (Ubuntu BSP 20.04) (Ubuntu 20.04 BSP aarch64)
+     Notas:    Klipper/Mainsail pos-clone SD->eMMC
+
+[INFO] Para baixar: ./07-download-backup.sh <YYYY-MM-DD> [destino]
 ```
 
 ---
@@ -61,13 +99,13 @@ cd firefly-rk3399
 ./scripts/07-download-backup.sh <data> [diretorio-destino]
 ```
 
-- `<data>`: chave `date` do manifest (ex: `2026-04-30`)
+- `<data>`: chave `date` do manifest (ex: `2026-06-18`)
 - `[diretorio-destino]`: opcional, padrão `/tmp`
 
 ### Exemplo
 
 ```bash
-./scripts/07-download-backup.sh 2026-04-30 /tmp
+./scripts/07-download-backup.sh 2026-06-18 /tmp
 ```
 
 **Fluxo automatizado:**
@@ -83,23 +121,24 @@ cd firefly-rk3399
 
 ```
 [INFO] 📥 Baixando imagem do Google Drive...
-[INFO]     Arquivo: firefly-backup-20260430.img.gz
-[INFO]     Destino: /tmp/firefly-backup-20260430.img.gz
+[INFO]     Arquivo: firefly-backup-20260618-1603.img.gz
+[INFO]     Destino: /tmp/firefly-backup-20260618-1603.img.gz
 Downloading...
-From (original): https://drive.google.com/uc?id=1TogEzG0hUVV140bq-y_jvWY609Mq1QKI
+From (original): https://drive.google.com/uc?id=16XIMkurfAEdXORyj1lDujwtGrSEW1dVc
 From (redirected): https://drive.google.com/uc?id=...&confirm=t&uuid=...
-To: /tmp/firefly-backup-20260430.img.gz
-100%|████████████| 3.34G/3.34G [09:23<00:00, 5.92MB/s]
+To: /tmp/firefly-backup-20260618-1603.img.gz
+100%|████████████| 4.00G/4.00G [11:12<00:00, 5.94MB/s]
 
 [INFO] 📥 Baixando MD5 companheiro...
 [INFO] 🔍 Validando MD5 (manifest)...
-[INFO] ✅ MD5 manifest OK: 1ab974d2268be859fdcacaadca9b65cf
+[INFO] ✅ MD5 manifest OK: 65a3e884a7f43fc78a258964997a1436
 [INFO] 🔍 Validando MD5 (arquivo .md5)...
 [INFO] ✅ MD5 file OK
-[INFO] 🎉 Download concluido!
+[INFO] 🎉 Download concluído com sucesso!
+[INFO]     /tmp/firefly-backup-20260618-1603.img.gz
 
-💡 Para restaurar:
-   sudo ./scripts/99-restore-image.sh /tmp/firefly-backup-20260430.img.gz /dev/mmcblkX
+[INFO] Para restaurar:
+[INFO]     sudo ./scripts/99-restore-image.sh /tmp/firefly-backup-20260618-1603.img.gz /dev/mmcblkX
 ```
 
 ---
@@ -109,14 +148,14 @@ To: /tmp/firefly-backup-20260430.img.gz
 Se o download for interrompido (Ctrl+C, queda de rede, etc.), **rode o mesmo comando de novo**:
 
 ```bash
-./scripts/07-download-backup.sh 2026-04-30 /tmp
+./scripts/07-download-backup.sh 2026-06-18 /tmp
 ```
 
 O `gdown` detecta o arquivo parcial e retoma de onde parou (`--continue` interno do script).
 
 > 💡 Para forçar redownload do zero, delete o arquivo antes:
 > ```bash
-> rm /tmp/firefly-backup-20260430.img.gz*
+> rm /tmp/firefly-backup-20260618-1603.img.gz*
 > ```
 
 ---

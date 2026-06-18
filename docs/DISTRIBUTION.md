@@ -76,7 +76,7 @@ https://drive.google.com/file/d/<ID>/view
 
 ### 4. Atualizar o manifest `images/backups.json`
 
-Adicione uma nova entrada no array `backups`:
+Adicione uma nova entrada no array `backups` (mais recente **primeiro**):
 
 ```json
 {
@@ -94,7 +94,7 @@ Adicione uma nova entrada no array `backups`:
       "host": "firefly (AIO-3399C-AI Board)",
       "os": "Ubuntu 20.04.6 LTS aarch64",
       "kernel": "4.4.194",
-      "notes": "can0 limpo via udev, Kalico estavel"
+      "notes": "can0 limpo via udev (txqueuelen 128), Kalico estavel"
     }
   ]
 }

@@ -99,7 +99,7 @@ Hash do arquivo baixado **não** bate com o do `backups.json`.
 md5sum /tmp/firefly-backup-*.img.gz
 
 # Hash esperado (manifest):
-jq -r '.backups[] | select(.date=="2026-04-30") | .md5' images/backups.json
+jq -r '.backups[] | select(.date=="2026-06-18") | .md5' images/backups.json
 
 # Hash do .md5 companheiro:
 cat /tmp/firefly-backup-*.img.gz.md5

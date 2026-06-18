@@ -33,7 +33,7 @@ O manifest é **a única fonte da verdade versionada** sobre quais backups exist
       "host": "firefly (AIO-3399C-AI Board)",
       "os": "Ubuntu 20.04.6 LTS aarch64",
       "kernel": "4.4.194",
-      "notes": "can0 limpo via udev, Kalico estavel"
+      "notes": "can0 limpo via udev (txqueuelen 128), Kalico estavel"
     }
   ]
 }
