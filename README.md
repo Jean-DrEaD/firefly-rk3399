@@ -12,12 +12,12 @@
 
 ## 📦 Download direto da imagem mais recente
 
-> **Última imagem:** `firefly-backup-20260619-HHMM.img.gz` — Ubuntu 20.04.6 LTS aarch64 + Kalico + eddy-ng (boot corrigido)
+> **Última imagem:** `firefly-backup-20260619-1950.img.gz` — Ubuntu 20.04.6 LTS aarch64 + Kalico + eddy-ng (boot corrigido)
 
 | Arquivo | Link | MD5 |
 |---------|------|-----|
-| `firefly-backup-20260619-HHMM.img.gz` | ⬇️ Google Drive *(preencher após upload)* | *(preencher após backup)* |
-| `firefly-backup-20260619-HHMM.img.gz.md5` | ⬇️ Google Drive *(preencher após upload)* | — |
+| `firefly-backup-20260619-1950.img.gz` | ⬇️ Google Drive *(preencher após upload)* | *(preencher após backup)* |
+| `firefly-backup-20260619-1950.img.gz.md5` | ⬇️ Google Drive *(preencher após upload)* | — |
 
 > Todas as imagens disponíveis e o histórico completo estão na página de [Releases](https://github.com/Jean-DrEaD/firefly-rk3399/releases).
 
@@ -39,7 +39,7 @@ chmod +x scripts/*.sh
 ./scripts/07-download-backup.sh 2026-06-19 /tmp
 
 # Restaura em um SD/eMMC (CUIDADO com o destino!)
-sudo ./scripts/99-restore-image.sh /tmp/firefly-backup-20260619-HHMM.img.gz /dev/mmcblk1
+sudo ./scripts/99-restore-image.sh /tmp/firefly-backup-20260619-1950.img.gz /dev/mmcblk1
 ```
 
 > 📋 **Pré-requisitos**: `jq`, `gdown` (>= 6.0), `md5sum`. Veja [`docs/INSTALL.md`](docs/INSTALL.md).

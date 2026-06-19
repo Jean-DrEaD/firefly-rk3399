@@ -8,10 +8,10 @@
 
 | Arquivo | Tamanho | Download |
 |---------|---------|----------|
-| `firefly-backup-20260619-HHMM.img.gz` | ~4 GB | ⬇️ Google Drive *(preencher após upload)* |
-| `firefly-backup-20260619-HHMM.img.gz.md5` | < 1 KB | ⬇️ Google Drive *(preencher após upload)* |
+| `firefly-backup-20260619-1950.img.gz` | 3.9 GB | [⬇️ Google Drive](https://drive.google.com/uc?export=download&id=1xzBkba_JzHIuV5kOyZ4axnSN_KoXcTY3) |
+| `firefly-backup-20260619-1950.img.gz.md5` | < 1 KB | [⬇️ Google Drive](https://drive.google.com/uc?export=download&id=1O32pbk3Qx_dULiD5V-K62AzXoEvq4t0H) |
 
-**MD5:** *(preencher após backup)*
+**MD5:** `ac7349eab68fe2879ba58eb68400ce9d`
 
 > ⚠️ O Google Drive pode exibir aviso de antivírus para arquivos > 100 MB. Se o download via browser travar, use `gdown` (instruções abaixo) ou o script `07-download-backup.sh`.
 
@@ -24,7 +24,7 @@
 | **Host** | Firefly AIO-3399C-AI Board |
 | **OS** | Ubuntu 20.04.6 LTS aarch64 |
 | **Kernel** | 4.4.194 |
-| **Tamanho (comprimido)** | ~4 GB (`gzip -1`) |
+| **Tamanho (comprimido)** | 3.9 GB (`gzip -1`) |
 | **Gerado em** | 2026-06-19 |
 | **Schema manifest** | v1.1 |
 
@@ -59,11 +59,11 @@ pipx install gdown   # >= 6.0.0
 pip install gdown   # ou: pipx install gdown
 
 # Preencha com os IDs reais após upload:
-gdown <GDRIVE_ID> -O firefly-backup-20260619-HHMM.img.gz
-gdown <GDRIVE_MD5_ID> -O firefly-backup-20260619-HHMM.img.gz.md5
+gdown 1xzBkba_JzHIuV5kOyZ4axnSN_KoXcTY3 -O firefly-backup-20260619-1950.img.gz
+gdown 1O32pbk3Qx_dULiD5V-K62AzXoEvq4t0H -O firefly-backup-20260619-1950.img.gz.md5
 
 # Validar
-md5sum -c firefly-backup-20260619-HHMM.img.gz.md5
+md5sum -c firefly-backup-20260619-1950.img.gz.md5
 ```
 
 ---
@@ -75,7 +75,7 @@ md5sum -c firefly-backup-20260619-HHMM.img.gz.md5
 lsblk
 
 # Restaurar (substitua /dev/mmcblkX pelo dispositivo correto)
-sudo ./scripts/99-restore-image.sh /tmp/firefly-backup-20260619-HHMM.img.gz /dev/mmcblkX
+sudo ./scripts/99-restore-image.sh /tmp/firefly-backup-20260619-1950.img.gz /dev/mmcblkX
 ```
 
 > 🚨 **ATENÇÃO:** O script apaga **tudo** no dispositivo destino. Confirme o caminho `/dev/...` antes de prosseguir.
