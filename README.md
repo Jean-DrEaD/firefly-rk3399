@@ -16,8 +16,8 @@
 
 | Arquivo | Link | MD5 |
 |---------|------|-----|
-| `firefly-backup-20260619-1950.img.gz` | ⬇️ Google Drive *(preencher após upload)* | *(preencher após backup)* |
-| `firefly-backup-20260619-1950.img.gz.md5` | ⬇️ Google Drive *(preencher após upload)* | — |
+| `firefly-backup-20260619-1950.img.gz` | ⬇️ Google Drive ** | *ac7349eab68fe2879ba58eb68400ce9d* |
+| `firefly-backup-20260619-1950.img.gz.md5` | ⬇️ Google Drive ** | — |
 
 > Todas as imagens disponíveis e o histórico completo estão na página de [Releases](https://github.com/Jean-DrEaD/firefly-rk3399/releases).
 
@@ -131,3 +131,4 @@ PRs são bem-vindos! Diretrizes:
 ## 📄 Licença
 
 [MIT](LICENSE) © Jean-DrEaD
+
