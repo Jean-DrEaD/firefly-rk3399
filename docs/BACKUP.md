@@ -46,16 +46,16 @@ sudo ./scripts/05-backup-emmc.sh
 ```
 [INFO] eMMC detectado: /dev/mmcblk0
 [INFO] Origem:  /dev/mmcblk0
-[INFO] Destino: /userdata/firefly-backup-20260618-1603.img.gz
+[INFO] Destino: /userdata/firefly-backup-20260619-1950.img.gz
 [WARN] Garanta espaço livre suficiente em /userdata
 [INFO] Gerando imagem comprimida (gzip -1, otimizado para velocidade)...
 16384+0 records in/out ... (dd progress)
 [ OK ] Backup concluído!
 ─────────────────────────────────────────
-file:       firefly-backup-20260618-1603.img.gz
-size:       4.0G
-md5:        65a3e884a7f43fc78a258964997a1436
-elapsed:    2400s
+file:       firefly-backup-20260619-1950.img.gz
+size:       3.9G
+md5:        ac7349eab68fe2879ba58eb68400ce9d
+elapsed:    2340s
 ─────────────────────────────────────────
 ```
 
@@ -115,8 +115,8 @@ Após gerar, valide o MD5:
 
 ```bash
 cd images/
-md5sum -c firefly-backup-20260618-1603.img.gz.md5
-# Esperado: firefly-backup-20260618-1603.img.gz: OK
+md5sum -c firefly-backup-20260619-1950.img.gz.md5
+# Esperado: firefly-backup-20260619-1950.img.gz: OK
 ```
 
 ---

@@ -83,18 +83,18 @@ Adicione uma nova entrada no array `backups` (mais recente **primeiro**):
   "schema_version": "1.1",
   "backups": [
     {
-      "date": "2026-06-18",
-      "file": "firefly-backup-20260618-1603.img.gz",
-      "md5_file": "firefly-backup-20260618-1603.img.gz.md5",
-      "size_human": "4.0G",
-      "size_bytes": 4199633243,
-      "md5": "65a3e884a7f43fc78a258964997a1436",
-      "gdrive_id": "16XIMkurfAEdXORyj1lDujwtGrSEW1dVc",
-      "gdrive_md5_id": "1GEXBWVRh5eMP_SCReh4WYU14zdZXGF8p",
+      "date": "2026-06-19",
+      "file": "firefly-backup-20260619-1950.img.gz",
+      "md5_file": "firefly-backup-20260619-1950.img.gz.md5",
+      "size_human": "3.9G",
+      "size_bytes": 4145888785,
+      "md5": "ac7349eab68fe2879ba58eb68400ce9d",
+      "gdrive_id": "1xzBkba_JzHIuV5kOyZ4axnSN_KoXcTY3",
+      "gdrive_md5_id": "1O32pbk3Qx_dULiD5V-K62AzXoEvq4t0H",
       "host": "firefly (AIO-3399C-AI Board)",
       "os": "Ubuntu 20.04.6 LTS aarch64",
       "kernel": "4.4.194",
-      "notes": "can0 limpo via udev (txqueuelen 128), Kalico estavel"
+      "notes": "boot corrigido, eddy-ng + Kalico atualizados"
     }
   ]
 }
